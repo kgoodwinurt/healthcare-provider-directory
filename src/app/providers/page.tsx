@@ -3,6 +3,10 @@ import Link from "next/link";
 import { Directory, type Facets } from "@/components/directory";
 import { filterProviders, getAllProviders } from "@/lib/providers";
 
+// Data comes from Postgres at request time — never prerender at build time,
+// so `next build` succeeds on Vercel even before DATABASE_URL is configured.
+export const dynamic = "force-dynamic";
+
 export const metadata: Metadata = {
   title: "Find a therapist or psychiatrist accepting your insurance",
   description:

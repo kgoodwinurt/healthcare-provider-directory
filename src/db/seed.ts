@@ -1,5 +1,5 @@
 import "dotenv/config";
-import { db } from "./index";
+import { getDb } from "./index";
 import { inquiries, providers, reviews } from "./schema";
 
 type Row = {
@@ -598,15 +598,15 @@ const slugify = (value: string) =>
 async function main() {
   console.log("Seeding providers…");
 
-  await db.delete(reviews);
-  await db.delete(inquiries);
-  await db.delete(providers);
+  await getDb().delete(reviews);
+  await getDb().delete(inquiries);
+  await getDb().delete(providers);
 
   const inserted = [];
   for (let i = 0; i < rows.length; i++) {
     const row = rows[i];
     const sheet = Math.floor(i / 4) + 1;
-    const [created] = await db
+    const [created] = await getDb()
       .insert(providers)
       .values({
         slug: `${row.st.toLowerCase()}-${slugify(row.n)}`,
@@ -651,7 +651,7 @@ async function main() {
     }));
   });
 
-  await db.insert(reviews).values(reviewRows);
+  await getDb().insert(reviews).values(reviewRows);
 
   console.log(`Seeded ${inserted.length} providers and ${reviewRows.length} reviews.`);
 }
