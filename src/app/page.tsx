@@ -3,6 +3,10 @@ import { HomeSearch } from "@/components/home-search";
 import { ProviderCard } from "@/components/provider-card";
 import { getFeatured } from "@/lib/providers";
 
+// Data comes from Postgres at request time — never prerender at build time,
+// so `next build` succeeds on Vercel even before DATABASE_URL is configured.
+export const dynamic = "force-dynamic";
+
 const INSURERS = [
   "Aetna",
   "Anthem",

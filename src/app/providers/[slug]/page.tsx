@@ -11,6 +11,10 @@ import {
   getSimilarProviders,
 } from "@/lib/providers";
 
+// Data comes from Postgres at request time — never prerender at build time,
+// so `next build` succeeds on Vercel even before DATABASE_URL is configured.
+export const dynamic = "force-dynamic";
+
 type Params = { slug: string };
 
 export async function generateMetadata({

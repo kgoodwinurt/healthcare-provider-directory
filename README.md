@@ -43,7 +43,7 @@ Open http://localhost:3000.
 The app runs on any Node host. For Vercel:
 
 1. Push to GitHub (see below), then import the repo in Vercel.
-2. Add a hosted Postgres URL (Neon, Supabase, RDS) as the `DATABASE_URL` environment variable.
+2. Add a hosted Postgres URL (Neon, Supabase, RDS) as the `DATABASE_URL` environment variable (Project → Settings → Environment Variables, for Production + Preview) and redeploy. The build no longer needs it — all DB-backed pages are `force-dynamic`, so `next build` succeeds without it — but the app needs it at request time.
 3. Build command stays `next build`; run `npx drizzle-kit push && npx tsx src/db/seed.ts` once against the hosted database.
 
 ## Pushing to GitHub

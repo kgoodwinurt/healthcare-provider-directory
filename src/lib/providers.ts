@@ -1,5 +1,5 @@
 import { eq } from "drizzle-orm";
-import { db } from "@/db";
+import { getDb } from "@/db";
 import { inquiries, providers, reviews } from "@/db/schema";
 import type { Provider, Review } from "@/db/schema";
 import { filterProviders } from "./filters";
@@ -8,7 +8,7 @@ export { filterProviders, SORT_LABELS } from "./filters";
 export type { ProviderFilters, SortKey } from "./filters";
 
 export async function getAllProviders(): Promise<Provider[]> {
-  return db.select().from(providers);
+  return getDb().select().from(providers);
 }
 
 export async function getFeatured(limit = 3): Promise<Provider[]> {
@@ -17,12 +17,12 @@ export async function getFeatured(limit = 3): Promise<Provider[]> {
 }
 
 export async function getProviderBySlug(slug: string): Promise<Provider | undefined> {
-  const rows = await db.select().from(providers).where(eq(providers.slug, slug)).limit(1);
+  const rows = await getDb().select().from(providers).where(eq(providers.slug, slug)).limit(1);
   return rows[0];
 }
 
 export async function getReviewsFor(providerId: number): Promise<Review[]> {
-  return db.select().from(reviews).where(eq(reviews.providerId, providerId));
+  return getDb().select().from(reviews).where(eq(reviews.providerId, providerId));
 }
 
 export async function getSimilarProviders(current: Provider, limit = 3): Promise<Provider[]> {
@@ -56,6 +56,6 @@ export async function recordInquiry(input: {
   insurance?: string;
   reason?: string;
 }) {
-  const rows = await db.insert(inquiries).values(input).returning({ id: inquiries.id });
+  const rows = await getDb().insert(inquiries).values(input).returning({ id: inquiries.id });
   return rows[0];
 }
